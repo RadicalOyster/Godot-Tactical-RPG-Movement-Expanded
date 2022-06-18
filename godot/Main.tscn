@@ -1,0 +1,70 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://GameBoard/Cursor/Cursor.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Units/Unit.tscn" type="PackedScene" id=2]
+[ext_resource path="res://GameBoard/GameBoard.gd" type="Script" id=3]
+[ext_resource path="res://GameBoard/Grid.tres" type="Resource" id=4]
+[ext_resource path="res://UnitOverlay/UnitOverlay.tscn" type="PackedScene" id=5]
+[ext_resource path="res://GameBoard/UnitPath.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Units/squirrel.png" type="Texture" id=7]
+[ext_resource path="res://Units/bear.png" type="Texture" id=8]
+[ext_resource path="res://Units/bugcat.png" type="Texture" id=9]
+[ext_resource path="res://Background/Map.tscn" type="PackedScene" id=10]
+
+[sub_resource type="Curve2D" id=1]
+resource_local_to_scene = true
+_data = {
+"points": PoolVector2Array(  )
+}
+
+[sub_resource type="Curve2D" id=2]
+resource_local_to_scene = true
+_data = {
+"points": PoolVector2Array(  )
+}
+
+[sub_resource type="Curve2D" id=3]
+resource_local_to_scene = true
+_data = {
+"points": PoolVector2Array(  )
+}
+
+[node name="Main" type="Node2D"]
+
+[node name="GameBoard" type="YSort" parent="."]
+script = ExtResource( 3 )
+grid = ExtResource( 4 )
+
+[node name="UnitOverlay" parent="GameBoard" instance=ExtResource( 5 )]
+
+[node name="UnitPath" parent="GameBoard" instance=ExtResource( 6 )]
+tile_data = PoolIntArray(  )
+
+[node name="Cursor" parent="GameBoard" instance=ExtResource( 1 )]
+ui_cooldown = 0.1
+
+[node name="Bear" parent="GameBoard" instance=ExtResource( 2 )]
+position = Vector2( 600, 480 )
+curve = SubResource( 1 )
+skin = ExtResource( 8 )
+move_range = 3
+skin_offset = Vector2( 2, 9 )
+
+[node name="Cat" parent="GameBoard" instance=ExtResource( 2 )]
+position = Vector2( 850.293, 412.465 )
+curve = SubResource( 2 )
+skin = ExtResource( 9 )
+move_range = 8
+skin_offset = Vector2( 5, 12 )
+
+[node name="Squirrel" parent="GameBoard" instance=ExtResource( 2 )]
+position = Vector2( 355.298, 298.556 )
+curve = SubResource( 3 )
+skin = ExtResource( 7 )
+move_range = 5
+skin_offset = Vector2( 6, 17 )
+
+[node name="Map" parent="GameBoard" instance=ExtResource( 10 )]
+z_index = -1
+[connection signal="accept_pressed" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_accept_pressed"]
+[connection signal="moved" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_moved"]
