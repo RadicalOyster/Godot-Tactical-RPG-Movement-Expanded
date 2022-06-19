@@ -15,7 +15,7 @@ func push(value: Vector2, priority):
 	if is_empty():
 		front = LinkedNode.new(value, priority)
 		
-	elif front.priority < priority:
+	elif front.priority > priority:
 		new_node = LinkedNode.new(value, priority, front)
 		front = new_node
 	
@@ -29,6 +29,7 @@ func push(value: Vector2, priority):
 			temp = temp.next
 		
 		new_node = LinkedNode.new(value, priority, temp.next)
+		temp.next = new_node
 
 func pop():
 	if is_empty():

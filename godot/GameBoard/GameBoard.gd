@@ -19,7 +19,7 @@ onready var _unit_overlay: UnitOverlay = $UnitOverlay
 onready var _unit_path: UnitPath = $UnitPath
 onready var _map: TileMap = $Map
 
-const MAX_VALUE : int = 9223372036854775807
+const MAX_VALUE : int = 999999
 
 func _ready() -> void:
 	_movement_costs = _map.get_movement_costs(grid)
@@ -86,12 +86,12 @@ func _flood_fill(cell: Vector2, max_distance: int) -> Array:
 			stack.append(coordinates)
 	return array
 
-func _dijkstra(cell: Vector2, max_distance: int):
+func _dijkstra(cell: Vector2, max_distance: int):	
 	var distance_to_node: int
 	var visited = []
 	var distances = []
 	var previous = []
-	var movable_cells = []
+	var movable_cells = [cell]
 	
 	for y in range(grid.size.y):
 		visited.append([])
@@ -107,33 +107,30 @@ func _dijkstra(cell: Vector2, max_distance: int):
 	queue.push(cell, 0)
 	distances[cell.y][cell.x] = 0
 	
+	var tile_cost
+	
 	while not queue.is_empty():
 		var current = queue.pop()
 		visited[current.value.y][current.value.x] = true
 		
 		for direction in DIRECTIONS:
 			var coordinates = current.value + direction
-			if grid.is_within_bounds(coordinates):
+			if grid.is_within_bounds(coordinates):				
 				if visited[coordinates.y][coordinates.x]:
 					continue
 				else:
-					if current.priority == MAX_VALUE:
-						distance_to_node = MAX_VALUE
-					else:
-						var tile_cost = _movement_costs[coordinates.y][coordinates.x]
-						if tile_cost == MAX_VALUE:
-							distance_to_node = MAX_VALUE
-						else:
-							distance_to_node = current.priority + tile_cost
-			
-			visited[coordinates.y][coordinates.x] = true
-			distances[coordinates.y][coordinates.x] = distance_to_node
-			
-			if distance_to_node <= max_distance:
-				previous[coordinates.y][coordinates.x] = current.value
-				movable_cells.append(coordinates)
-				queue.push(current.value, distance_to_node)
-				
+					tile_cost = _movement_costs[coordinates.y][coordinates.x]
+					tile_cost = _movement_costs[coordinates.y][coordinates.x]
+					distance_to_node = current.priority + tile_cost
+		
+					visited[coordinates.y][coordinates.x] = true
+					distances[coordinates.y][coordinates.x] = distance_to_node
+
+				if distance_to_node <= max_distance:
+					previous[coordinates.y][coordinates.x] = current.value
+					movable_cells.append(coordinates)
+					queue.push(coordinates, distance_to_node)
+
 	return movable_cells
 
 ## Updates the _units dictionary with the target position for the unit and asks the _active_unit to walk to it.
