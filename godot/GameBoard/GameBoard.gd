@@ -86,12 +86,11 @@ func _flood_fill(cell: Vector2, max_distance: int) -> Array:
 			stack.append(coordinates)
 	return array
 
-func _dijkstra(cell: Vector2, max_distance: int):	
-	var distance_to_node: int
+func _dijkstra(cell: Vector2, max_distance: int) -> Array:
+	var movable_cells = [cell]
 	var visited = []
 	var distances = []
 	var previous = []
-	var movable_cells = [cell]
 	
 	for y in range(grid.size.y):
 		visited.append([])
@@ -108,6 +107,7 @@ func _dijkstra(cell: Vector2, max_distance: int):
 	distances[cell.y][cell.x] = 0
 	
 	var tile_cost
+	var distance_to_node
 	
 	while not queue.is_empty():
 		var current = queue.pop()
@@ -115,22 +115,21 @@ func _dijkstra(cell: Vector2, max_distance: int):
 		
 		for direction in DIRECTIONS:
 			var coordinates = current.value + direction
-			if grid.is_within_bounds(coordinates):				
+			if grid.is_within_bounds(coordinates):
 				if visited[coordinates.y][coordinates.x]:
 					continue
 				else:
 					tile_cost = _movement_costs[coordinates.y][coordinates.x]
-					tile_cost = _movement_costs[coordinates.y][coordinates.x]
 					distance_to_node = current.priority + tile_cost
-		
+					
 					visited[coordinates.y][coordinates.x] = true
 					distances[coordinates.y][coordinates.x] = distance_to_node
-
+				
 				if distance_to_node <= max_distance:
 					previous[coordinates.y][coordinates.x] = current.value
 					movable_cells.append(coordinates)
 					queue.push(coordinates, distance_to_node)
-
+	
 	return movable_cells
 
 ## Updates the _units dictionary with the target position for the unit and asks the _active_unit to walk to it.

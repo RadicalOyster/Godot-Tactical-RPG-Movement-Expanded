@@ -11,13 +11,12 @@ func _init():
 func is_empty():
 	return front == null
 
-func push(value: Vector2, priority):
+func push(value: Vector2, priority: int):
 	if is_empty():
-		front = LinkedNode.new(value, priority)
-		
+		front = LinkedNode.new(value, priority)	
+	
 	elif front.priority > priority:
 		new_node = LinkedNode.new(value, priority, front)
-		front = new_node
 	
 	else:
 		temp = front
@@ -38,6 +37,3 @@ func pop():
 		temp = front
 		front = front.next
 		return temp
-
-func peek():
-	return front
