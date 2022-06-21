@@ -1,15 +1,11 @@
 # Tactical RPG movement
+This is an expanded example of tactical RPG movement in Godot based on GDQuest's original demo.
 
-![](images/trpg-screenshot.png)
+# Links #
+[GDQuest's original Tactical RPG Movement Series](https://www.gdquest.com/tutorial/godot/2d/tactical-rpg-movement/)
+[Github page for GDQuest's original project](https://github.com/GDQuest/godot-2d-tactical-rpg-movement)
 
-This demo and intermediate-level tutorial shows how to code a grid-based movement as in games like Fire Emblem or Advance Wars.
+Added features:
 
-It was funded by our backers and [Godot 2D Secrets](https://gdquest.mavenseed.com/courses/godot-2d-secrets).
-
-Features:
-
-- Grid-based movement.
-- Cursor to navigate the map and select a unit.
-- Displays the unit's walkable area.
-- Displays the unit's path preview.
-- The user can validate or cancel the movement.
+- An implementation of Dijkstra's Algorithm for pathfinding
+- Ability to assign movement costs to tiles through the tileset
