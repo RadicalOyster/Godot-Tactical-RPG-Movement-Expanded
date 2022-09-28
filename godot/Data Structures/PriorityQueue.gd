@@ -17,6 +17,10 @@ func push(value: Vector2, priority: int):
 	
 	elif front.priority > priority:
 		new_node = LinkedNode.new(value, priority, front)
+		
+		new_node.next = front
+		
+		front = new_node
 	
 	else:
 		temp = front
